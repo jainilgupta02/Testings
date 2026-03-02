@@ -53,7 +53,7 @@ jobs:
       - name: Upload coverage HTML report
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-report-py${{ matrix.python-version }}
+          name: coverage-report
           path: htmlcov/
           retention-days: 7
           
@@ -64,3 +64,30 @@ jobs:
           files: ./coverage.xml
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
+
+# Step 8: Github pages
+  deploy-pages:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: site
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
