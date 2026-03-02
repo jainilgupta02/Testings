@@ -78,7 +78,7 @@ jobs:
       - name: Download coverage artifact
         uses: actions/download-artifact@v4
         with:
-          name: coverage-report
+          name: coverage-report-py3.12
           path: site
 
       - name: Setup Pages
