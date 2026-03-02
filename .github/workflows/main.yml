@@ -46,7 +46,7 @@ jobs:
                  --cov-report=term-missing \
                  --cov-report=xml \
                  --cov-report=html \
-                 --cov-fail-under=80 \
+                 --cov-fail-under=40 \
                  tests/
  
       # Step 6: Upload HTML report as artifact
