@@ -11,6 +11,7 @@ venv/
 
 # Pytest
 .pytest_cache/
+.coverage
 
 # VS Code
 .vscode/
