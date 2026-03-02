@@ -46,7 +46,7 @@ jobs:
                  --cov-report=term-missing \
                  --cov-report=xml \
                  --cov-report=html \
-                 --cov-fail-under=40 \
+                 --cov-fail-under=80 \
                  tests/
  
       # Step 6: Upload HTML report as artifact
@@ -56,3 +56,11 @@ jobs:
           name: coverage-report-py${{ matrix.python-version }}
           path: htmlcov/
           retention-days: 7
+          
+      # Step 7: Upload to Codecov
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
