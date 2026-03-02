@@ -1,7 +1,9 @@
 import pytest
 import sys, os
+from unittest.mock import patch
+from io import StringIO
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
-from calculator import Calculator
+from calculator import Calculator, main
 
 @pytest.fixture
 def calc():
@@ -81,3 +83,58 @@ class TestDivide:
     
     def test_divide_zero_by_number(self, calc):
         assert calc.divide(0, 5) == 0
+
+
+class TestMain:
+    @patch('builtins.input', side_effect=['1', '10', '5'])
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_main_addition(self, mock_stdout, mock_input):
+        main()
+        output = mock_stdout.getvalue()
+        assert "Simple Calculator" in output
+        assert "1. Add" in output
+        assert "Result: 15.0" in output
+    
+    @patch('builtins.input', side_effect=['2', '20', '8'])
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_main_subtraction(self, mock_stdout, mock_input):
+        main()
+        output = mock_stdout.getvalue()
+        assert "2. Subtract" in output
+        assert "Result: 12.0" in output
+    
+    @patch('builtins.input', side_effect=['3', '6', '7'])
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_main_multiplication(self, mock_stdout, mock_input):
+        main()
+        output = mock_stdout.getvalue()
+        assert "3. Multiply" in output
+        assert "Result: 42.0" in output
+    
+    @patch('builtins.input', side_effect=['4', '20', '4'])
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_main_division(self, mock_stdout, mock_input):
+        main()
+        output = mock_stdout.getvalue()
+        assert "4. Divide" in output
+        assert "Result: 5.0" in output
+    
+    @patch('builtins.input', side_effect=['4', '10', '0'])
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_main_division_by_zero(self, mock_stdout, mock_input):
+        with pytest.raises(ValueError, match="Cannot divide by zero"):
+            main()
+    
+    @patch('builtins.input', side_effect=['5', '10', '5'])
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_main_invalid_choice(self, mock_stdout, mock_input):
+        main()
+        output = mock_stdout.getvalue()
+        assert "Invalid choice" in output
+    
+    @patch('builtins.input', side_effect=['1', '2.5', '3.7'])
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_main_with_floats(self, mock_stdout, mock_input):
+        main()
+        output = mock_stdout.getvalue()
+        assert "Result: 6.2" in output

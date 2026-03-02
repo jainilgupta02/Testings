@@ -25,14 +25,16 @@ def main():
     num1 = float(input("Enter first number: "))
     num2 = float(input("Enter second number: "))
     
+    calc = Calculator()
+    
     if choice == '1':
-        print(f"Result: {add(num1, num2)}")
+        print(f"Result: {calc.add(num1, num2)}")
     elif choice == '2':
-        print(f"Result: {subtract(num1, num2)}")
+        print(f"Result: {calc.subtract(num1, num2)}")
     elif choice == '3':
-        print(f"Result: {multiply(num1, num2)}")
+        print(f"Result: {calc.multiply(num1, num2)}")
     elif choice == '4':
-        print(f"Result: {divide(num1, num2)}")
+        print(f"Result: {calc.divide(num1, num2)}")
     else:
         print("Invalid choice")
 
